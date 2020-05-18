@@ -12,11 +12,6 @@ urlPrefix =
     "http://elm-in-action.com/"
 
 
-photoArray : Array { url : String }
-photoArray =
-    Array.fromList initialModel.photos
-
-
 view model =
     div [ class "content" ]
         [ h1 [] [ text "Photo Groove" ]
@@ -37,6 +32,15 @@ viewThumbnail selectedUrl thumb =
         []
 
 
+type alias Photo =
+    { url : String }
+
+
+type alias Model =
+    { photos : List Photo, selectedUrl : String }
+
+
+initialModel : Model
 initialModel =
     { photos =
         [ { url = "1.jpeg" }
@@ -45,6 +49,11 @@ initialModel =
         ]
     , selectedUrl = "1.jpeg"
     }
+
+
+photoArray : Array { url : String }
+photoArray =
+    Array.fromList initialModel.photos
 
 
 update msg model =

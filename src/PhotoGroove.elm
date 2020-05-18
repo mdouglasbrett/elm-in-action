@@ -1,13 +1,20 @@
 module PhotoGroove exposing (main)
 
+import Array exposing (Array)
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 
 
+urlPrefix : String
 urlPrefix =
     "http://elm-in-action.com/"
+
+
+photoArray : Array { url : String }
+photoArray =
+    Array.fromList initialModel.photos
 
 
 view model =

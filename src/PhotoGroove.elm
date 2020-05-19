@@ -28,7 +28,7 @@ view model =
                 viewSizeChooser
                 [ Small, Medium, Large ]
             )
-        , div [ id "thumbnails" ]
+        , div [ id "thumbnails", class (sizeToString model.chosenSize) ]
             -- viewThumbnail is partially applied here
             (List.map (viewThumbnail model.selectedUrl) model.photos)
         , img [ class "large", src (urlPrefix ++ "large/" ++ model.selectedUrl) ] []
@@ -90,7 +90,7 @@ initialModel =
         , { url = "3.jpeg" }
         ]
     , selectedUrl = "1.jpeg"
-    , chosenSize = Medium
+    , chosenSize = Large
     }
 
 

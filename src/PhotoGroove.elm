@@ -22,6 +22,9 @@ view model =
         [ h1 [] [ text "Photo Groove" ]
         , button [ onClick { description = "ClickedSurpriseMe", data = "" } ]
             [ text "Surprise Me!" ]
+        , h3 [] [ text "Thumbnail Size: " ]
+        , div [ id "choose-size" ]
+            [ viewSizeChooser Small, viewSizeChooser Medium, viewSizeChooser Large ]
         , div [ id "thumbnails" ]
             -- viewThumbnail is partially applied here
             (List.map (viewThumbnail model.selectedUrl) model.photos)

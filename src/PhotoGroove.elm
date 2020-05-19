@@ -20,6 +20,8 @@ view : Model -> Html Msg
 view model =
     div [ class "content" ]
         [ h1 [] [ text "Photo Groove" ]
+        , button [ onClick { description = "ClickedSurpriseMe", data = "" } ]
+            [ text "Surprise Me!" ]
         , div [ id "thumbnails" ]
             -- viewThumbnail is partially applied here
             (List.map (viewThumbnail model.selectedUrl) model.photos)

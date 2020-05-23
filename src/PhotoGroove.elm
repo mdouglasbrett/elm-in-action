@@ -13,7 +13,7 @@ urlPrefix =
 
 
 type alias Msg =
-    { description : String, data : String }
+    { description : String, data : String, size : ThumbnailSize }
 
 
 view : Model -> Html Msg
@@ -97,6 +97,16 @@ initialModel =
 photoArray : Array { url : String }
 photoArray =
     Array.fromList initialModel.photos
+
+
+getPhotoUrl : Int -> String
+getPhotoUrl index =
+    case Array.get index photoArray of
+        Just photo ->
+            photo.url
+
+        Nothing ->
+            ""
 
 
 update msg model =

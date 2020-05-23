@@ -15,6 +15,7 @@ urlPrefix =
 
 type Msg
     = ClickedPhoto String
+    | GotSelectedIndex Int
     | ClickedSize ThumbnailSize
     | ClickedSurpriseMe
 
@@ -127,7 +128,10 @@ update msg model =
             ( { model | chosenSize = size }, Cmd.none )
 
         ClickedSurpriseMe ->
-            ( { model | selectedUrl = "2.jpeg" }, Cmd.none )
+            ( model, Random.generate GotSelectedIndex randomPhotoPicker )
+
+        GotSelectedIndex index ->
+            ( { model | selectedUrl = getPhotoUrl index }, Cmd.none )
 
 
 
@@ -135,8 +139,9 @@ update msg model =
 
 
 main =
-    Browser.sandbox
-        { init = initialModel
+    Browser.element
+        { init = \flags -> ( initialModel, Cmd.none )
         , view = view
         , update = update
+        , subscriptions = \model -> Sub.none
         }

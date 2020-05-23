@@ -138,6 +138,7 @@ update msg model =
 -- Had I had a default branch here, compiler would not have caught missing patterns
 
 
+main : Program () Model Msg
 main =
     Browser.element
         { init = \flags -> ( initialModel, Cmd.none )

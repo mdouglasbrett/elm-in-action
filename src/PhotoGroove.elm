@@ -117,6 +117,9 @@ update msg model =
         ClickedPhoto url ->
             { model | selectedUrl = url }
 
+        ClickedSize size ->
+            { model | chosenSize = size }
+
         ClickedSurpriseMe ->
             { model | selectedUrl = "2.jpeg" }
 

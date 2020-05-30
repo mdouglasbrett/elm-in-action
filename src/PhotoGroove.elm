@@ -15,7 +15,7 @@ urlPrefix =
 
 type Msg
     = ClickedPhoto String
-    | GotSelectedIndex Int
+    | GotRandomPhoto Photo
     | ClickedSize ThumbnailSize
     | ClickedSurpriseMe
 
@@ -122,10 +122,21 @@ update msg model =
             ( { model | chosenSize = size }, Cmd.none )
 
         ClickedSurpriseMe ->
-            ( model, Random.generate GotSelectedIndex randomPhotoPicker )
+            case model.status of
+                Loaded (firstPhoto :: otherPhotos) _ ->
+                    ( model, Random.generate GotRandomPhoto (Random.uniform firstPhoto otherPhotos) )
 
-        GotSelectedIndex index ->
-            ( { model | status = selectUrl (getPhotoUrl index) model.status }, Cmd.none )
+                Loaded [] _ ->
+                    ( model, Cmd.none )
+
+                Loading ->
+                    ( model, Cmd.none )
+
+                Errored errorMessage ->
+                    ( model, Cmd.none )
+
+        GotRandomPhoto photo ->
+            ( { model | status = selectUrl photo.url model.status }, Cmd.none )
 
 
 

@@ -22,32 +22,34 @@ type Msg
 
 view : Model -> Html Msg
 view model =
-    div [ class "content" ]
-    (case model.status of
-        Loaded photos selectedUrl ->
-              viewLoaded photos selectedUrl model.chosenSize
-        Loading ->
-              []
-        Errored errorMessage ->
-            [ text ("Error" ++ errorMessage )]
-              )
+    div [ class "content" ] <|
+        case model.status of
+            Loaded photos selectedUrl ->
+                viewLoaded photos selectedUrl model.chosenSize
 
-viewLoaded: List Photo -> String -> ThumbnailSize -> List (Html Msg)
+            Loading ->
+                []
+
+            Errored errorMessage ->
+                [ text ("Error" ++ errorMessage) ]
+
+
+viewLoaded : List Photo -> String -> ThumbnailSize -> List (Html Msg)
 viewLoaded photos selectedUrl chosenSize =
-        [ h1 [] [ text "Photo Groove" ]
-        , button [ onClick ClickedSurpriseMe ]
-            [ text "Surprise Me!" ]
-        , h3 [] [ text "Thumbnail Size: " ]
-        , div [ id "choose-size" ]
-            (List.map
-                viewSizeChooser
-                [ Small, Medium, Large ]
-            )
-        , div [ id "thumbnails", class (sizeToString chosenSize) ]
-            -- viewThumbnail is partially applied here
-            (List.map (viewThumbnail selectedUrl) photos)
-        , img [ class "large", src (urlPrefix ++ "large/" ++ selectedUrl) ] []
-        ]
+    [ h1 [] [ text "Photo Groove" ]
+    , button [ onClick ClickedSurpriseMe ]
+        [ text "Surprise Me!" ]
+    , h3 [] [ text "Thumbnail Size: " ]
+    , div [ id "choose-size" ]
+        (List.map
+            viewSizeChooser
+            [ Small, Medium, Large ]
+        )
+    , div [ id "thumbnails", class (sizeToString chosenSize) ]
+        -- viewThumbnail is partially applied here
+        (List.map (viewThumbnail selectedUrl) photos)
+    , img [ class "large", src (urlPrefix ++ "large/" ++ selectedUrl) ] []
+    ]
 
 
 viewThumbnail : String -> Photo -> Html Msg

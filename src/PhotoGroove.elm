@@ -112,31 +112,11 @@ initialModel =
     }
 
 
-photoArray : Array { url : String }
-photoArray =
-    Array.fromList initialModel.photos
-
-
-getPhotoUrl : Int -> String
-getPhotoUrl index =
-    case Array.get index photoArray of
-        Just photo ->
-            photo.url
-
-        Nothing ->
-            ""
-
-
-randomPhotoPicker : Random.Generator Int
-randomPhotoPicker =
-    Random.int 0 (Array.length photoArray - 1)
-
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ClickedPhoto url ->
-            ( { model | selectedUrl = url }, Cmd.none )
+            ( { model | status = selectUrl url model.status }, Cmd.none )
 
         ClickedSize size ->
             ( { model | chosenSize = size }, Cmd.none )
@@ -145,11 +125,24 @@ update msg model =
             ( model, Random.generate GotSelectedIndex randomPhotoPicker )
 
         GotSelectedIndex index ->
-            ( { model | selectedUrl = getPhotoUrl index }, Cmd.none )
+            ( { model | status = selectUrl (getPhotoUrl index) model.status }, Cmd.none )
 
 
 
 -- Had I had a default branch here, compiler would not have caught missing patterns
+
+
+selectUrl : String -> Status -> Status
+selectUrl url status =
+    case status of
+        Loaded photos _ ->
+            Loaded photos url
+
+        Loading ->
+            status
+
+        Errored errorMessage ->
+            status
 
 
 main : Program () Model Msg

@@ -4,6 +4,7 @@ import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
+import Http
 import Random
 
 
@@ -17,6 +18,7 @@ type Msg
     | GotRandomPhoto Photo
     | ClickedSize ThumbnailSize
     | ClickedSurpriseMe
+    | GotPhotos (Result Http.Error String)
 
 
 view : Model -> Html Msg
@@ -139,6 +141,14 @@ update msg model =
 
         GotRandomPhoto photo ->
             ( { model | status = selectUrl photo.url model.status }, Cmd.none )
+
+        GotPhotos result ->
+            case result of
+                Ok responseStr ->
+                    ( model, Cmd.none )
+
+                Err httpError ->
+                    ( { model | status = Errored "Server error!" }, Cmd.none )
 
 
 

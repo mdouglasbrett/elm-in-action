@@ -1,6 +1,5 @@
 module PhotoGroove exposing (main)
 
-import Array exposing (Array)
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)

@@ -142,22 +142,20 @@ update msg model =
         GotRandomPhoto photo ->
             ( { model | status = selectUrl photo.url model.status }, Cmd.none )
 
-        GotPhotos result ->
-            case result of
-                Ok responseStr ->
-                    case String.split "," responseStr of
-                        (firstUrl :: _) as urls ->
-                            let
-                                photos =
-                                    List.map (\url -> { url = url }) urls
-                            in
-                            ( { model | status = Loaded photos firstUrl }, Cmd.none )
+        GotPhotos (Ok responseStr) ->
+            case String.split "," responseStr of
+                (firstUrl :: _) as urls ->
+                    let
+                        photos =
+                            List.map Photo urls
+                    in
+                    ( { model | status = Loaded photos firstUrl }, Cmd.none )
 
-                        [] ->
-                            ( { model | status = Errored "0 photos found" }, Cmd.none )
+                [] ->
+                    ( { model | status = Errored "0 photos found" }, Cmd.none )
 
-                Err httpError ->
-                    ( { model | status = Errored "Server error!" }, Cmd.none )
+        GotPhotos (Err _) ->
+            ( model, Cmd.none )
 
 
 

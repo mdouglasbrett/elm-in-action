@@ -20,7 +20,7 @@ type Msg
     | GotRandomPhoto Photo
     | ClickedSize ThumbnailSize
     | ClickedSurpriseMe
-    | GotPhotos (Result Http.Error String)
+    | GotPhotos (Result Http.Error (List Photo))
 
 
 view : Model -> Html Msg
@@ -88,16 +88,6 @@ sizeToString size =
             "large"
 
 
-photoDecoder : Decoder Photo
-photoDecoder =
-    succeed buildPhoto |> required "url" string |> required "size" int |> optional "title" string "(untitled)"
-
-
-buildPhoto : String -> Int -> String -> Photo
-buildPhoto url size title =
-    { url = url, size = size, title = title }
-
-
 type ThumbnailSize
     = Small
     | Medium
@@ -109,6 +99,11 @@ type alias Photo =
     , size : Int
     , title : String
     }
+
+
+photoDecoder : Decoder Photo
+photoDecoder =
+    succeed Photo |> required "url" string |> required "size" int |> optional "title" string "(untitled)"
 
 
 type Status
@@ -130,7 +125,7 @@ initialModel =
 
 initialCmd : Cmd Msg
 initialCmd =
-    Http.get { url = "http://elm-in-action.com/photos/list", expect = Http.expectString GotPhotos }
+    Http.get { url = "http://elm-in-action.com/photos/list.json", expect = Http.expectJson GotPhotos (list photoDecoder) }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -162,14 +157,10 @@ update msg model =
         GotRandomPhoto photo ->
             ( { model | status = selectUrl photo.url model.status }, Cmd.none )
 
-        GotPhotos (Ok responseStr) ->
-            case String.split "," responseStr of
-                (firstUrl :: _) as urls ->
-                    let
-                        photos =
-                            List.map Photo urls
-                    in
-                    ( { model | status = Loaded photos firstUrl }, Cmd.none )
+        GotPhotos (Ok photos) ->
+            case photos of
+                first :: rest ->
+                    ( { model | status = Loaded photos first.url }, Cmd.none )
 
                 [] ->
                     ( { model | status = Errored "0 photos found" }, Cmd.none )

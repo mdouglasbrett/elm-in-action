@@ -113,6 +113,11 @@ initialModel =
     }
 
 
+initialCmd : Cmd Msg
+initialCmd =
+    Http.get { url = "http://elm-in-action.com/photos/list", expect = Http.expectString GotPhotos }
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -175,11 +180,15 @@ selectUrl url status =
             status
 
 
+
+-- In the book, Never is used instead of unit here, but that throws a compiler error at this point --
+
+
 main : Program () Model Msg
 main =
     Browser.element
-        { init = \flags -> ( initialModel, Cmd.none )
+        { init = \_ -> ( initialModel, initialCmd )
         , view = view
         , update = update
-        , subscriptions = \model -> Sub.none
+        , subscriptions = \_ -> Sub.none
         }

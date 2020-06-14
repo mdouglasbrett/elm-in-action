@@ -61,11 +61,8 @@ viewThumbnail selectedUrl thumb =
         [ src (urlPrefix ++ thumb.url)
         , title (thumb.title ++ " [" ++ String.fromInt thumb.size ++ " KB]")
         , classList
-            -- At this point in the book we introduce Just thumb.url here but that fails to compile --
             [ ( "selected", selectedUrl == thumb.url )
             ]
-
-        -- At this point in the book SelectByUrl is called onClick, but we haven't defined that yet... --
         , onClick (ClickedPhoto thumb.url)
         ]
         []

@@ -170,10 +170,6 @@ update msg model =
             ( model, Cmd.none )
 
 
-
--- Had I had a default branch here, compiler would not have caught missing patterns
-
-
 selectUrl : String -> Status -> Status
 selectUrl url status =
     case status of

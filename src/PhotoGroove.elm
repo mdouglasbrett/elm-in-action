@@ -183,10 +183,6 @@ selectUrl url status =
             status
 
 
-
--- In the book, Never is used instead of unit here, but that throws a compiler error at this point --
-
-
 main : Program () Model Msg
 main =
     Browser.element

@@ -6,16 +6,16 @@
     <!-- lol floats! -->
     <link rel="stylesheet" href="http://elm-in-action.com/styles.css">
     <script>
-        // TODO: feature check this
-        class RangeSlider extends HTMLElement {
-            connectedCallback() {
-                // TODO: why use var here?
-                var input = document.createElement("input");
-                this.appendChild(input);
+        if (window.customElements) {
+            class RangeSlider extends HTMLElement {
+                connectedCallback() {
+                    let input = document.createElement("input");
+                    this.appendChild(input);
+                }
             }
-        }
 
-        window.customElements.define("range-slider", RangeSlider);
+            window.customElements.define("range-slider", RangeSlider);
+        }
     </script>
 </head>
 <body>

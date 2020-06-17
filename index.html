@@ -21,11 +21,12 @@
                     })
 
                     let rangeSliderNode = this;
-                    jsr.addEventListener("update", function(_, value) {
-                        let event = new CustomEvent("slide", { detail: {
-                            userSlidTo: value,
-                            }})
-                        console.log(event)
+                    jsr.addEventListener("update", function (_, value) {
+                        let event = new CustomEvent("slide", {
+                            detail: {
+                                userSlidTo: value,
+                            }
+                        })
                         rangeSliderNode.dispatchEvent(event)
                     })
                 }

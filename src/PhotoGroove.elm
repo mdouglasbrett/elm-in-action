@@ -3,9 +3,9 @@ module PhotoGroove exposing (main)
 import Browser
 import Html exposing (..)
 import Html.Attributes as Attr exposing (class, classList, id, name, src, title, type_)
-import Html.Events exposing (onClick)
+import Html.Events exposing (on, onClick)
 import Http
-import Json.Decode exposing (Decoder, int, list, string, succeed)
+import Json.Decode exposing (Decoder, at, int, list, string, succeed)
 import Json.Decode.Pipeline exposing (optional, required)
 import Json.Encode as Encode
 import Random
@@ -215,3 +215,21 @@ main =
 rangeSlider : List (Attribute msg) -> List (Html msg) -> Html msg
 rangeSlider attributes children =
     node "range-slider" attributes children
+
+
+
+-- TODO: look into idiomatic file organisation/structure in elm
+
+
+onSlide : (Int -> msg) -> Attribute msg
+onSlide toMsg =
+    let
+        detailUserSlidTo : Decoder Int
+        detailUserSlidTo =
+            at [ "detail", "userSlidTo" ] int
+
+        msgDecoder : Decoder msg
+        msgDecoder =
+            Json.Decode.map toMsg detailUserSlidTo
+    in
+    on "slide" msgDecoder

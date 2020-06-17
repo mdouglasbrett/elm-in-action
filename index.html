@@ -19,6 +19,15 @@
                         sliders: 1,
                         grid: false
                     })
+
+                    let rangeSliderNode = this;
+                    jsr.addEventListener("update", function(_, value) {
+                        let event = new CustomEvent("slide", { detail: {
+                            userSlidTo: value,
+                            }})
+                        console.log(event)
+                        rangeSliderNode.dispatchEvent(event)
+                    })
                 }
             }
 

@@ -1,4 +1,4 @@
-module PhotoGroove exposing (main)
+port module PhotoGroove exposing (main)
 
 import Browser
 import Html exposing (..)
@@ -116,6 +116,10 @@ type ThumbnailSize
     = Small
     | Medium
     | Large
+
+
+type alias FilterOptions =
+    { url : String, filters : List { name : String, amount : Int } }
 
 
 type alias Photo =
